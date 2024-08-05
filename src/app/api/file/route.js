@@ -6,20 +6,32 @@ export async function POST(req, res) {
   const data = await req.json();
   console.log(data);
 
-  await connectMongoDB();
+  try {
+    await connectMongoDB();
 
-  const baseFolder = await File.findById(data.folderId);
-  console.log(baseFolder);
+    const baseFolder = await File.findById(data.folderId);
+    console.log(baseFolder);
 
-  const movieFile = new File({
-    name: data.fileName,
-    type: 'file',
-    data: {
-      value: data.value
-    },
-  });
-
-
+    const newFile = new File({
+      name: data.fileName,
+      type: 'file',
+      data: {
+        value: data.value
+      },
+    });
+    await newFile.save();
+    console.log(newFile);
+    baseFolder.folders.push(newFile._id);
+    await baseFolder.save();
+  } catch (error) {
+    console.log(error);
+    return new Response(JSON.stringify({ error: "error creating file" }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  }
 
 
   return new Response(JSON.stringify({ message: "new file created" }), {

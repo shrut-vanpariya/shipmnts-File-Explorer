@@ -6,10 +6,18 @@ import { ChevronRight } from 'lucide-react';
 import { Folder } from 'lucide-react';
 import { File } from 'lucide-react';
 
+import { useStore } from "@/lib/globalStore";
+
+
 const FileStructure = ({ folder }) => {
   const [isOpen, setIsOpen] = useState(true);
+  const { currentFolder, setCurrentFolder } = useStore();
+
   return (
-    <div key={folder.name}>
+    <div key={folder.name} onClick={() => {
+      setCurrentFolder(folder)
+      // console.log(currentFolder);
+    }}>
       <span className='flex items-center gap-1.5 py-1'>
         {
           folder.folders && folder.folders.length > 0 && (
@@ -18,9 +26,9 @@ const FileStructure = ({ folder }) => {
             </button>
           )
         }
-        {folder.folders ?
-          <Folder className={`${folder.folders.length === 0 ? 'ml-[22px]':''}`} /> :
-          <File className='ml-[22px]'/>
+        {folder.type === 'folder' ?
+          <Folder className={`${folder.folders.length === 0 ? 'ml-[22px]' : ''}`} /> :
+          <File className='ml-[22px]' />
         }
         {folder.name}
       </span>
@@ -31,7 +39,6 @@ const FileStructure = ({ folder }) => {
           ))}
         </ul>
       )}
-
     </div>
   )
 }
