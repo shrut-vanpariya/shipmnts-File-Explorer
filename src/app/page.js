@@ -79,8 +79,8 @@ export default function Home() {
           ))
         }
       </div>
-      <div className="border-[1px]">
-        {JSON.stringify(currentFolder)}
+      <div className=" flex justify-center items-center min-h-screen  w-full border-[1px]">
+        {currentFolder ? JSON.stringify(currentFolder) : "No Data"}
       </div>
     </main>
   );

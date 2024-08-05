@@ -14,11 +14,13 @@ const FileStructure = ({ folder }) => {
   const { currentFolder, setCurrentFolder } = useStore();
 
   return (
-    <div key={folder.name} onClick={() => {
-      setCurrentFolder(folder)
-      // console.log(currentFolder);
-    }}>
-      <span className='flex items-center gap-1.5 py-1'>
+    <div key={folder.name}>
+      <span className={`${folder == currentFolder ? "bg-slate-400" : ""} flex items-center gap-1.5 py-1`}
+        onClick={() => {
+          setCurrentFolder(folder)
+          // console.log(currentFolder);
+        }}
+      >
         {
           folder.folders && folder.folders.length > 0 && (
             <button onClick={() => setIsOpen(!isOpen)}>
