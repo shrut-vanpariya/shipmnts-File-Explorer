@@ -36,9 +36,10 @@ export default function Home() {
 
   const [folderData, setFolderData] = useState([]);
 
-  const {currentFolder, setCurrentFolder} = useStore();
+  const { currentFolder, setCurrentFolder } = useStore();
 
   useEffect(() => {
+    
     try {
       fetch(`/api/folder`)
         .then(response => response.json())
@@ -56,10 +57,22 @@ export default function Home() {
 
   }, [])
 
-  useEffect(() => {
-    console.log("here",currentFolder);
-    
-  }, [currentFolder])
+
+  const handleFolder = async () => {
+    try {
+      const res = await fetch(`/api/expense`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(expense)
+      });
+      const data = await res.json();
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <main className="flex min-h-screen items-start justify-start">
@@ -67,7 +80,7 @@ export default function Home() {
         <div className="flex justify-between items-center">
           <span>File Explorer</span>
           <div className="flex items-center justify-center gap-x-2">
-            <FolderPlus />
+            <FolderPlus onClick={handleFolder} />
             <FilePlus />
           </div>
         </div>
